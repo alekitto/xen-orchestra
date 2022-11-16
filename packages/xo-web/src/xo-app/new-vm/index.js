@@ -694,6 +694,10 @@ export default class NewVm extends BaseComponent {
   _buildTemplate = pattern =>
     compileTemplate(pattern, {
       '{name}': state => state.name_label || '',
+      '{slug}': state => (state.name_label || '').toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9]/g, '-')
+        .replace(/-+/g, '-'),
       '%': (_, i) => i,
     })
 

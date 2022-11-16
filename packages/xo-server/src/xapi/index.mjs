@@ -1307,7 +1307,7 @@ export default class Xapi extends XapiBase {
     const sr = this.getObject(srId)
 
     // First, create a small VDI (10MB) which will become the ConfigDrive
-    const buffer = fatfsBufferInit({ label: 'cidata     ' })
+    const buffer = fatfsBufferInit({ label: 'CIDATA     ' })
     const vdi = await this._getOrWaitObject(
       await this.VDI_create({
         name_label: 'XO CloudConfigDrive',
@@ -1318,12 +1318,13 @@ export default class Xapi extends XapiBase {
     $defer.onFailure(() => vdi.$destroy())
 
     // Then, generate a FAT fs
-    const { mkdir, writeFile } = promisifyAll(fatfs.createFileSystem(fatfsBuffer(buffer)))
+    const { createLabel, mkdir, writeFile } = promisifyAll(fatfs.createFileSystem(fatfsBuffer(buffer)))
 
     await Promise.all([
       // preferred datasource: NoCloud
       //
       // https://cloudinit.readthedocs.io/en/latest/topics/datasources/nocloud.html
+      createLabel('CIDATA'),
       writeFile('meta-data', 'instance-id: ' + vm.uuid + '\n'),
       writeFile('user-data', userConfig),
       networkConfig !== undefined && writeFile('network-config', networkConfig),

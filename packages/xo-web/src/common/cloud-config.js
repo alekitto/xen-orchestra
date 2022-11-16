@@ -75,14 +75,18 @@ export const NetworkConfigInfo = () => (
   </Tooltip>
 )
 
-export const DEFAULT_CLOUD_CONFIG_TEMPLATE =
-  '#cloud-config\n#hostname: {name}%\n#ssh_authorized_keys:\n#  - ssh-rsa <myKey>\n#packages:\n#  - htop\n'
+export const DEFAULT_CLOUD_CONFIG_TEMPLATE = `#cloud-config
+#hostname: {name}%
+#ssh_authorized_keys:\n#  - ssh-rsa <myKey>
+#packages:
+#  - htop
+`
 
 // SOURCE: https://cloudinit.readthedocs.io/en/latest/topics/network-config-format-v1.html
-export const DEFAULT_NETWORK_CONFIG_TEMPLATE = `#network:
-#  version: 1
-#  config:
-#  - type: physical
-#    name: eth0
-#    subnets:
-#      - type: dhcp`
+export const DEFAULT_NETWORK_CONFIG_TEMPLATE = `network:
+  version: 1
+  config:
+  - type: physical
+    name: eth0
+    subnets:
+      - type: dhcp`
